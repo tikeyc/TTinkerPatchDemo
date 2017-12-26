@@ -38,12 +38,24 @@ public class SampleLoadReporter extends DefaultLoadReporter {
         super(context);
     }
 
+    /**所有的补丁合成请求都需要先通过PatchListener的检查过滤。
+     * 这次检查不通过的回调，它运行在发起请求的进程。默认我们只是打印日志
+     * @param patchFile
+     * @param errorCode
+     */
     @Override
     public void onLoadPatchListenerReceiveFail(final File patchFile, int errorCode) {
         super.onLoadPatchListenerReceiveFail(patchFile, errorCode);
         SampleTinkerReport.onTryApplyFail(errorCode);
     }
 
+    /**
+     * 这个是无论加载失败或者成功都会回调的接口，它返回了本次加载所用的时间、返回码等信息。
+     * 默认我们只是简单的输出这个信息，你可以在这里加上监控上报逻辑
+     * @param patchDirectory
+     * @param loadCode
+     * @param cost
+     */
     @Override
     public void onLoadResult(File patchDirectory, int loadCode, long cost) {
         super.onLoadResult(patchDirectory, loadCode, cost);
@@ -63,20 +75,28 @@ public class SampleLoadReporter extends DefaultLoadReporter {
         });
     }
 
+    /**在加载过程捕捉到异常，十分希望你可以把错误信息反馈给我们。默认我们会直接卸载补丁包
+     * @param e
+     * @param errorCode
+     */
     @Override
     public void onLoadException(Throwable e, int errorCode) {
         super.onLoadException(e, errorCode);
         SampleTinkerReport.onLoadException(e, errorCode);
     }
 
+    /**部分文件的md5与meta中定义的不一致。默认我们为了安全考虑，依然会清空补丁
+     * @param file
+     * @param fileType
+     */
     @Override
     public void onLoadFileMd5Mismatch(File file, int fileType) {
         super.onLoadFileMd5Mismatch(file, fileType);
         SampleTinkerReport.onLoadFileMisMatch(fileType);
     }
 
-    /**
-     * try to recover patch oat file
+    /**在加载过程中，发现部分文件丢失的回调。默认若是dex，dex优化文件或者lib文件丢失，
+     * 我们将尝试从补丁包去修复这些丢失的文件。若补丁包或者版本文件丢失，将卸载补丁包
      *
      * @param file
      * @param fileType
@@ -88,24 +108,44 @@ public class SampleLoadReporter extends DefaultLoadReporter {
         SampleTinkerReport.onLoadFileNotFound(fileType);
     }
 
+    /**加载过程补丁包的检查失败，这里可以通过错误码区分，例如签名校验失败、tinkerId不一致等原因。默认我们将会卸载补丁包
+     * @param patchFile
+     * @param errorCode
+     */
     @Override
     public void onLoadPackageCheckFail(File patchFile, int errorCode) {
         super.onLoadPackageCheckFail(patchFile, errorCode);
         SampleTinkerReport.onLoadPackageCheckFail(errorCode);
     }
 
+    /**patch.info是用来管理补丁包版本的文件，这是info文件损坏的回调。默认我们会卸载补丁包，因为此时我们已经无法恢复了
+     * @param oldVersion
+     * @param newVersion
+     * @param patchInfoFile
+     */
     @Override
     public void onLoadPatchInfoCorrupted(String oldVersion, String newVersion, File patchInfoFile) {
         super.onLoadPatchInfoCorrupted(oldVersion, newVersion, patchInfoFile);
         SampleTinkerReport.onLoadInfoCorrupted();
     }
 
+    /**系统OTA后，为了加快补丁的执行，我们会采用解释模式来执行补丁
+     * @param type
+     * @param e
+     */
     @Override
     public void onLoadInterpret(int type, Throwable e) {
         super.onLoadInterpret(type, e);
         SampleTinkerReport.onLoadInterpretReport(type, e);
     }
 
+    /**补丁包版本升级的回调，只会在主进程调用。
+     * 默认我们会杀掉其他所有的进程(保证所有进程代码的一致性)，并且删掉旧版本的补丁文件
+     * @param oldVersion
+     * @param newVersion
+     * @param patchDirectoryFile
+     * @param currentPatchName
+     */
     @Override
     public void onLoadPatchVersionChanged(String oldVersion, String newVersion, File patchDirectoryFile, String currentPatchName) {
         super.onLoadPatchVersionChanged(oldVersion, newVersion, patchDirectoryFile, currentPatchName);

@@ -1,4 +1,4 @@
-package com.tikeyc.ttinkerpatchdemo.classes;
+package com.tikeyc.ttinkerpatchdemo.classes.user;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

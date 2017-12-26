@@ -83,15 +83,16 @@ dependencies {
     //    annotationProcessor("com.tencent.tinker:tinker-android-anno:1.9.1") { changing = true }
     //    compileOnly("com.tencent.tinker:tinker-android-anno:1.9.1") { changing = true }
     //2 Gradle版本小于2.3的这么写：
-    compile 'com.android.support:multidex:1.0.1'
     //可选，用于生成application类; 若使用annotation需要单独引用,对于tinker的其他库都无需再引用
-    provided 'com.tencent.tinker:tinker-android-anno:1.9.2'
     //tinker的核心库
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.tencent.tinker:tinker-android-lib:1.9.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.xutils:xutils:3.5.0'
+    compile 'com.blankj:utilcode:1.9.8'
     testCompile 'junit:junit:4.12'
+    provided 'com.tencent.tinker:tinker-android-anno:1.9.2'
 }
 
 // Tinker配置与任务

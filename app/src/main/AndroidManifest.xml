@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tikeyc.ttinkerpatchdemo">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- MyApplication由TinkerApplicationLike类中的DefaultLifeCycle生成 -->
     <application
@@ -20,15 +20,20 @@
             android:name=".tinker.service.SampleResultService"
             android:exported="false" />
 
-        <activity android:name=".classes.tinkerManager.TinkerManagerActivity">
+        <service
+            android:name=".classes.utils.KillAppService"
+            android:exported="false">
+        </service>
+
+        <activity android:name=".classes.main.TinkerMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".classes.LoginActivity">
-        </activity>
+        <activity android:name=".classes.user.LoginActivity"></activity>
+        <activity android:name=".classes.main.LaunchTestActivity"></activity>
     </application>
 
 </manifest>

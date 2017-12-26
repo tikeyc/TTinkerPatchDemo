@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 
+import com.blankj.utilcode.util.Utils;
 import com.tencent.tinker.anno.DefaultLifeCycle;
 import com.tencent.tinker.lib.tinker.Tinker;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
@@ -46,6 +47,8 @@ public class TinkerApplicationLike extends DefaultApplicationLike {
     public void onCreate() {
         super.onCreate();
         // 将之前自定义的Application中onCreate()方法所执行的操作搬到这里...或者下面onBaseContextAttached()方法中
+        //https://github.com/Blankj/AndroidUtilCode
+        Utils.init(mApplication);
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

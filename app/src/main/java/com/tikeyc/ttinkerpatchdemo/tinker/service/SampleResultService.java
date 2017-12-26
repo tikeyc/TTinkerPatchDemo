@@ -16,6 +16,7 @@
 
 package com.tikeyc.ttinkerpatchdemo.tinker.service;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.tencent.tinker.lib.util.TinkerServiceInternals;
 
 import java.io.File;
 
+import com.tikeyc.ttinkerpatchdemo.classes.utils.RestartAppUtils;
 import com.tikeyc.ttinkerpatchdemo.tinker.util.Utils;
 
 /**
@@ -63,6 +65,7 @@ public class SampleResultService extends DefaultTinkerResultService {
             public void run() {
                 if (result.isSuccess) {
                     Toast.makeText(getApplicationContext(), "patch success, please restart process", Toast.LENGTH_LONG).show();
+                    RestartAppUtils.restartAppWithAlarmManager(getApplication(), null, 0);
                 } else {
                     Toast.makeText(getApplicationContext(), "patch fail, please check reason", Toast.LENGTH_LONG).show();
                 }
