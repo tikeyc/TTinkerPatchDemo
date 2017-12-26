@@ -104,7 +104,7 @@ public class TinkerMainActivity extends AppCompatActivity {
      * 基础包loginEnable的值为 false
      * 修复包loginEnable的值为 true
      */
-    private boolean loginEnable = true;
+    private boolean loginEnable = false;
 
     @Event(value = R.id.login_button, type = View.OnClickListener.class)
     private void loginButtonClick(View view) {
